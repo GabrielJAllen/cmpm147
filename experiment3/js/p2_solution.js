@@ -164,7 +164,7 @@ function drawContext(grid, i, j, target) {
     //let code = gridCode(grid, i, j, target);
     //let tile = lookup[code];
     //placeTile(i, j, tile[0], tile[1]);
-    placeTile(i, j, 18, 17);
+    placeTile(i, j, 20, 20);
   } else {
     // If no matching tile is found, use a default tile
     placeTile(i, j, (floor(random(4))), 0);
