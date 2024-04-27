@@ -163,7 +163,7 @@ const lookup = [
   [18,18],//bottom and top neighbor--SHOULD NOT OCCUR
   [11,1],//bottom, top, and left neighbor
   [9,0],//bottom and right neighbor
-  [18,18],//bottom, right, and left neighbor--SHOULD NOT OCCUR
+  [10, 0],//bottom, right, and left neighbor
   [9,1],//bottom, right, and top neighbor
   [18,18],//all neighbor--SHOULD NOT HAVE TILE
 ];//look up codes for water
@@ -190,7 +190,7 @@ function drawContext(grid, i, j, target) {
     const [ti, tj] = getAnimatedTileFor(frameCount);
     placeTile(i, j, ti, tj);
     let code = gridCode(grid, i, j, target);
-    if(code != 15 && code != 7 && code != 0 && code != 2 && code != 5 && code != 8 && code != 10 && code != 13){
+    if(code != 15 && code != 7 && code != 0 && code != 2 && code != 5 && code != 8 && code != 10){
       let tile = lookup[code];
       placeTile(i, j, tile[0], tile[1]);
     }
