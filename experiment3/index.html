@@ -50,17 +50,23 @@
 
 			<div class="minor-section">
 				<h2>Description</h2>
-				<p>What are you trying to acomplish with this experiment?</p>
+				<p>This experiment is attempting to create a procedurally generated tiled scene that has water with animation and autotiling. The scene is intended to be a portion of a pond or lake in a forest</p>
 			</div>
 
 			<div class="minor-section">
 				<h2>Technical</h2>
-				<p>Describe in detail what you did technically and how it works?</p>
+				<p>So the two important parts of the Technical were the text generation for the water and trees, and the animation for the water. The text generation first adds in the water start at the top of the grid and as it goes down each row it may add to the width of the water
+					on one side. If it hits the edge it will always add onto the none touching edge. Then the trees are added on both sides a random distance away from the water characters. Due to a bug the trees are at an irregular distance but it works well for looking natural so it wasn't fixed.
+					The animation function is my partner's creation, but here it is used to loop through a set of the water tiles to simulate the water moving. It indexs the array of tile coordinates based off the frame count currently.
+				</p>
 			</div>
 
 			<div class="minor-section">
 				<h2>Reflection</h2>
-				<p>Each person that worked on the code should reflect on the process, the difficulties, and the successes of the experiment.</p>
+				<p>Gabriel Allen:
+					For me this was an assignment that had unique challenges. Thankfully my focus on using the text map first then focusing on interpreting that for the tiles helped me keep my focus really clear. Once I had gotten to implementing the tiles Qizhe had dealt with them a lot so he gave me a lot of helpful insights on how to handle them, and his code on draw context gave me a much better understanding of what it was used to achieve.
+					My main growth with this assignment was with increasing my understanding of how to use chatGPT as a coding tool. As stated before, all the functions I relied on it to create were buggy and didn’t work as intended, but those bugs became features that aided in the implementation. Additionally the procedural design for this assignment was interesting, though I can see how autotiling for a number of different tile type quickly becomes a very cumbersome task.
+				</p>
 			</div>
 
 		</section>
