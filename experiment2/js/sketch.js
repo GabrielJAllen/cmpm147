@@ -7,24 +7,6 @@
 
 // Constants - User-servicable parts
 // In a longer project I like to put these in a separate file
-const VALUE1 = 1;
-const VALUE2 = 2;
-
-// Globals
-let myInstance;
-let canvasContainer;
-var centerHorz, centerVert;
-
-class MyClass {
-    constructor(param1, param2) {
-        this.property1 = param1;
-        this.property2 = param2;
-    }
-
-    myMethod() {
-        // code to run when method is called
-    }
-}
 
 function resizeScreen() {
   centerHorz = canvasContainer.width() / 2; // Adjusted for drawing logic
@@ -43,7 +25,7 @@ function setup() {
   // resize canvas is the page is resized
 
   // create an instance of the class
-  myInstance = new MyClass("VALUE1", "VALUE2");
+  createButton("reimagine").mousePressed(() => seed++);
 
   $(window).resize(function() {
     resizeScreen();
@@ -51,29 +33,86 @@ function setup() {
   resizeScreen();
 }
 
-// draw() function is called repeatedly, it's the main animation loop
+let seed = 239;
+
+const grassColor = "#455424";
+const skyColor = "#5D84A1";
+const riverColor = "#124863";
+const bridgeColor = "#808080";
+const bridgeShadowColor = "#575757";
+const woodColor = "#573a1b";
+const pathColor = "#786046";
+const treeColor = "#770000"
+
 function draw() {
-  background(220);    
-  // call a method on the instance
-  myInstance.myMethod();
+  randomSeed(seed);
 
-  // Set up rotation for the rectangle
-  push(); // Save the current drawing context
-  translate(centerHorz, centerVert); // Move the origin to the rectangle's center
-  rotate(frameCount / 100.0); // Rotate by frameCount to animate the rotation
-  fill(234, 31, 81);
+  background(100);
+
   noStroke();
-  rect(-125, -125, 250, 250); // Draw the rectangle centered on the new origin
-  pop(); // Restore the original drawing context
 
-  // The text is not affected by the translate and rotate
-  fill(255);
-  textStyle(BOLD);
-  textSize(140);
-  text("p5*", centerHorz - 105, centerVert + 40);
-}
+  fill(skyColor);
+  rect(0, 0, width, height / 2);
 
-// mousePressed() function is called once after every time a mouse button is pressed
-function mousePressed() {
-    // code to run when mouse is pressed
+  fill(grassColor);
+  rect(0, height / 2, width, height / 2);
+  
+  fill(riverColor);
+  quad(width/3, height/2, width/4, height, 3*width/4, height, 2*width/3, height/2);
+  
+  let Xscale = .04;
+  let Yscale = .02;
+  for( let x = width/4; x < (3*width/4);x++){
+    for(let y = height/2; y < height; y++){
+      let R = 40 * noise(x * Xscale, (y - millis()) * Yscale );
+      let G = 130 + 70 * noise(x * Xscale, (y - millis()) * Yscale);
+      let B = 150 + 90 * noise(x * Xscale, (y - millis()) * Yscale);
+      stroke(R, G, B);
+      point( x , y );
+    }
+  }
+  
+  noStroke();
+  
+  fill(grassColor);
+  triangle(width/3, height/2, width/4, height, width/4, height/2);
+  triangle(2*width/3, height/2, 3*width/4, height, 3*width/4, height/2);
+  
+  fill(pathColor);
+  rect(0, height/1.8, width, (height/1.6 - height/1.7));
+  
+  fill(woodColor);
+  rect(width/2.5, height/2, width/20, height/5)
+  rect(width/2.5 + width/7, height/2, width/20, height/5)
+  
+  fill(bridgeShadowColor);
+  arc(width/2, height/1.8, width/2.5, height/3 , PI, 0);
+  fill(bridgeColor);
+  arc(width/2, height/1.7, width/2.5, height/3 , PI, 0);
+
+  let trees = random(3, 9);
+  let side = 1;
+  let mod = height / 20;
+  for( let i = 0; i < trees; i ++){
+    fill(woodColor);
+    let h = random(height/5 , height/2);
+    let x = 0;
+    if(side){
+      x = random(width/3 - 50);
+      side = 0;
+    } else {
+      x = random(width/2) + width/2;
+      side = 1;
+    }
+    let w = random(width/200, width/20);
+    let z = random( (height/2) + mod, (height/2) + 2 * mod );
+    mod += height/20;
+    triangle(x, z, x + w, z, x + (w/2), z - h);
+    
+    
+    fill(treeColor);
+    let r = random(width/20, width/10);
+    circle( x + w/2, z - h, r);
+  }
+  
 }
