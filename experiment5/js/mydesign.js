@@ -21,6 +21,12 @@ function getInspirations() {
       credit: "Zeppelin-ramp de Hindenburg / Hindenburg zeppelin disaster, Sam Shere, 1937",
       style: "triangles"
     },
+    {
+      name: "yin-yang", 
+      assetUrl: "img/yinyang.png",
+      credit: "Yin and Yang",
+      style: "circles"
+    }
   ];
 }
 
@@ -51,11 +57,15 @@ function initDesign(inspiration) {
                     fill: random(255)})
     }
   } else if (inspiration.style == "triangles"){
-    for(let i = 0; i < 100; i++) {
-    design.fg.push({x: random(width),
+    for(let i = 0; i < 500; i++) {
+    design.fg.push({bg: 0,
+                    x: random(width),
                     y: random(height),
                     w: random(width/10),
                     h: random(height/3),
+                    r1: random(width/20) - (width/40),
+                    r2: random(width/20) - (width/40),
+                    r3: random(width/20) - (width/40),
                     fill: random(255)})
     }
   } else {
@@ -89,7 +99,7 @@ function renderDesign(design, inspiration) {
     noStroke();
     for(let box of design.fg) {
         fill(box.fill, 128);
-        triangle(box.x, box.y, box.x + box.w/2,box.y - box.h, box.x + box.w, box.y);
+        triangle(box.x + box.r1, box.y + box.r1, box.x + box.w/2 + box.r2,box.y - box.h + box.r2, box.x + box.w + box.r3, box.y + box.r3);
     }
   } else {
     strokeWeight(3);
@@ -118,7 +128,10 @@ function mutateDesign(design, inspiration, rate) {
             box.y = mut(box.y, 0, height, rate);
             box.w = mut(box.w, 0, width/2, rate);
             box.h = mut(box.h, 0, height/2, rate);
-  }
+            box.r1 = mut(box.r1, 0, height/20, rate);
+            box.r2 = mut(box.r2, 0, height/20, rate);
+            box.r3 = mut(box.r3, 0, height/20, rate);
+      }
   } else {
         inspiration.image.loadPixels();
         for(let box of design.fg) {
@@ -128,7 +141,7 @@ function mutateDesign(design, inspiration, rate) {
             box.y = tempy;
             box.l = mut(box.l, -width/10, width/10, rate);
             box.h = mut(box.h, -height/10, height/10, rate);
-            
+
             tempx = map(tempx, 0, width, 0, inspiration.image.width);
             tempy = map(tempy, 0, height, 0, inspiration.image.height);
             box.fill = inspiration.image.get(tempx, tempy);
