@@ -25,7 +25,7 @@ function getInspirations() {
 }
 
 function initDesign(inspiration) {
-  // set the canvas size based on the container
+  //set the canvas size based on the container
   let canvasContainer = $('.image-container'); // Select the container using jQuery
   let canvasWidth = canvasContainer.width(); // Get the width of the container
   let aspectRatio = inspiration.image.height / inspiration.image.width;
@@ -34,7 +34,7 @@ function initDesign(inspiration) {
   $(".caption").text(inspiration.credit); // Set the caption text
 
   // add the original image to #original
-  const imgHTML = `<img src="${inspiration.assetUrl}" style="width:${canvasWidth}px;">`
+  const imgHTML = `<img src="${inspiration.assetUrl}" style="width:${width}px;">`
   $('#original').empty();
   $('#original').append(imgHTML);
 
@@ -60,17 +60,17 @@ function initDesign(inspiration) {
     }
   } else {
     inspiration.image.loadPixels();
-    //let temp = loadImage('./img/stargate.jpg')
-    //image(temp, 0, 0);
-    for(let i = 0; i < 500; i++) {
+    for(let i = 0; i < 2000; i++) {
         let tempx = random(width);
         let tempy = random(height);
+        temperx = map(tempx, 0, width, 0, inspiration.image.width);
+        tempery = map(tempy, 0, height, 0, inspiration.image.height);
         design.fg.push({x: tempx,
                     y: tempy,
-                    x2: random(width),
-                    y2: random(height),
-                    fill: get(tempx, tempy)})
-    }
+                    l: random(-(tempx - width/10), tempx + width/10),
+                    h: random(-(tempy - height/10), tempy + height/10),
+                    fill : inspiration.image.get(temperx, tempery)})
+                }
   }
   
   return design;
@@ -92,10 +92,10 @@ function renderDesign(design, inspiration) {
         triangle(box.x, box.y, box.x + box.w/2,box.y - box.h, box.x + box.w, box.y);
     }
   } else {
-    strokeWeight(5);
+    strokeWeight(3);
     for(let box of design.fg) {
         stroke(box.fill);
-        line(box.x, box.y, box.x2, box.y2);
+        line(box.x, box.y, box.x + box.l, box.y + box.h);
     }
   }
 }
@@ -120,18 +120,18 @@ function mutateDesign(design, inspiration, rate) {
             box.h = mut(box.h, 0, height/2, rate);
   }
   } else {
-        //let temp = loadImage('./img/stargate.jpg')
-        //image(temp, 0, 0);
         inspiration.image.loadPixels();
         for(let box of design.fg) {
             let tempx = mut(box.x, 0, width, rate);
             let tempy = mut(box.y, 0, height, rate);
             box.x = tempx;
             box.y = tempy;
-            box.x2 = mut(box.x2, 0, width/2, rate);
-            box.y2 = mut(box.y2, 0, height/2, rate);
-            box.fill = get(tempx, tempy);
-            //print(box.fill);
+            box.l = mut(box.l, -width/10, width/10, rate);
+            box.h = mut(box.h, -height/10, height/10, rate);
+            
+            tempx = map(tempx, 0, width, 0, inspiration.image.width);
+            tempy = map(tempy, 0, height, 0, inspiration.image.height);
+            box.fill = inspiration.image.get(tempx, tempy);
     }
   }
 }
